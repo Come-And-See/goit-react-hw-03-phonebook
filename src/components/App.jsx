@@ -25,7 +25,7 @@ class App extends Component {
 
     this.setState({ contacts: local })
 
-    if (!+local.length) {
+    if (local.length === 0) {
       this.setState({ contacts })
     }
   }
