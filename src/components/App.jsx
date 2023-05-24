@@ -18,18 +18,32 @@ class App extends Component {
     filter: '',
   }
 
+
+  componentDidMount() {
+    const { contacts } = this.state
+
+    this.setState({ contacts: JSON.parse(localStorage.getItem('Contact_List')) })
+
+    if (!JSON.parse(localStorage.getItem('Contact_List')).length) {
+      this.setState({ contacts })
+    }
+  }
+
+
+  componentDidUpdate(_, prevState) {
+    const { contacts } = this.state;
+
+    if (prevState.contacts.length !== contacts.length) {
+      localStorage.setItem('Contact_List', JSON.stringify(contacts))
+    }
+  }
+
   addContact = (contact) => {
     if (this.checkDuplicates(contact.name)) {
       return;
     }
-
-    // contact = {
-    //   ...contact,
-    //   id: nanoid()
-    // }
-
     this.setState((prevState) => ({
-      contacts: [{ ...contact, id: nanoid() }, ...prevState.contacts]
+      contacts: [{ id: nanoid(), ...contact }, ...prevState.contacts]
     }));
   }
 
